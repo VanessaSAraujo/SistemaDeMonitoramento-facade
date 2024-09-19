@@ -1,6 +1,7 @@
 package com.example.sistemaMonitoramento.repositories;
 
 import com.example.sistemaMonitoramento.entities.Comorbidade;
+import com.example.sistemaMonitoramento.entities.DadosDiarios;
 import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.interfaces.IComorbidadeRepository;
 import jakarta.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class ComorbidadeRepository implements IComorbidadeRepository {
     @Override
     public List<Comorbidade> findByName(String name) {
         TypedQuery<Comorbidade> query = entityManager
-                .createQuery("select s from Student s WHERE s.firstName LIKE: name", Comorbidade.class);
+                .createQuery("select s from Comorbidade s WHERE s.firstName LIKE: name", Comorbidade.class);
         query.setParameter("name", "%" + name + "%");
 
         return query.getResultList();
@@ -45,11 +46,13 @@ public class ComorbidadeRepository implements IComorbidadeRepository {
     @Override
     @Transactional
     public void update(int id, Comorbidade comorbidade) {
-        TypedQuery<Comorbidade> query = entityManager
-                .createQuery("delete s from Comorbidade s WHERE s.id = :id", Comorbidade.class);
-        query.setParameter("id", id);
+        Comorbidade comorbidadeInDb = this.entityManager.find(Comorbidade.class, id);
 
-        query.executeUpdate();
+        comorbidadeInDb.setDescricao(comorbidade.getDescricao());
+        comorbidadeInDb.setNome(comorbidade.getNome());
+
+
+        this.entityManager.merge(comorbidadeInDb);
     }
 
     @Override

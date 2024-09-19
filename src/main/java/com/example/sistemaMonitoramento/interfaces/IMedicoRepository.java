@@ -5,6 +5,7 @@ import com.example.sistemaMonitoramento.entities.Medico;
 import java.util.List;
 
 public interface IMedicoRepository {
+
     void create (Medico medico);
 
     Medico findById(Integer id);
