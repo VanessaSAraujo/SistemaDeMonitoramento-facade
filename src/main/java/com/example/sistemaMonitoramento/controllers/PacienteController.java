@@ -1,5 +1,4 @@
-package com.example.sistemaMonitoramento.controlers;
-
+package com.example.sistemaMonitoramento.controllers;
 
 import com.example.sistemaMonitoramento.entities.Paciente;
 import com.example.sistemaMonitoramento.services.PacienteService;
@@ -12,6 +11,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
+
     @Autowired
     private PacienteService pacienteService;
 
