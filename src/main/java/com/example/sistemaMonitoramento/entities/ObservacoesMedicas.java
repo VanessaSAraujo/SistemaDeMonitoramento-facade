@@ -8,8 +8,9 @@ import java.util.Date;
 @Table(name = "observacoesmedicas")
 public class ObservacoesMedicas {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "id_paciente", nullable = false)
@@ -22,14 +23,22 @@ public class ObservacoesMedicas {
     @Column(name = "data", nullable = false)
     private Date data;
 
-    @Column(name = "observacao", nullable = true)
+    @Column(name = "observacao")
     private String observacao;
 
-    public Integer getId() {
+    public ObservacoesMedicas(int id, Paciente paciente, Medico medico, Date data, String observacao) {
+        this.id = id;
+        this.paciente = paciente;
+        this.medico = medico;
+        this.data = data;
+        this.observacao = observacao;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

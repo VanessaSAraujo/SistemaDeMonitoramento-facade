@@ -6,36 +6,48 @@ import jakarta.persistence.*;
 @Table(name = "medicos")
 public class Medico {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "especialidade", length = 100, nullable = false)
+    @Column(name = "especialidade", nullable = false)
     private String especialidade;
 
-    @Column(name = "contato", length = 100)
+    @Column(name = "contato")
     private String contato;
 
     @ManyToOne
     @JoinColumn(name = "id_clinica", nullable = false)
     private Clinica clinica;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "senha", length = 45)
+    @Column(name = "senha")
     private String senha;
 
-    @Column(name = "crm", length = 45)
+    @Column(name = "crm")
     private String crm;
 
-    public Integer getId() {
+    public Medico(Integer id, String nome, String especialidade, String contato, Clinica clinica, String email, String senha, String crm) {
+        this.id = id;
+        this.nome = nome;
+        this.especialidade = especialidade;
+        this.contato = contato;
+        this.clinica = clinica;
+        this.email = email;
+        this.senha = senha;
+        this.crm = crm;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -8,16 +8,17 @@ import java.util.List;
 @Table(name = "clinicas")
 public class Clinica {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "endereco", length = 255)
+    @Column(name = "endereco")
     private String endereco;
 
-    @Column(name = "telefone", length = 20)
+    @Column(name = "telefone")
     private String telefone;
 
     @OneToMany(mappedBy = "clinica")
@@ -25,6 +26,15 @@ public class Clinica {
 
     @OneToMany(mappedBy = "clinica")
     private List<Paciente> pacientes;
+
+    public Clinica(int id, String nome, String endereco, String telefone, List<Medico> medicos, List<Paciente> pacientes) {
+        this.id = id;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.medicos = medicos;
+        this.pacientes = pacientes;
+    }
 
     public Integer getId() {
         return id;
