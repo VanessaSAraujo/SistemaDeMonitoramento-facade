@@ -1,7 +1,6 @@
 package com.example.sistemaMonitoramento.services;
 
 import com.example.sistemaMonitoramento.entities.Paciente;
-import com.example.sistemaMonitoramento.repositories.IPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

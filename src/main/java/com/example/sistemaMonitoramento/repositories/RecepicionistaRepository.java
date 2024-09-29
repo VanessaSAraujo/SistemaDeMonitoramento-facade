@@ -1,63 +1,43 @@
 package com.example.sistemaMonitoramento.repositories;
 
-import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.entities.Recepcionista;
 import com.example.sistemaMonitoramento.interfaces.IRecepcionistaRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
+@Repository
 public class RecepicionistaRepository implements IRecepcionistaRepository {
-    private EntityManager entityManager;
+    private ArrayList<Recepcionista> recepcionistas = new ArrayList<Recepcionista>();
 
-    @Autowired
-    public RecepicionistaRepository (EntityManager entityManager){ this.entityManager = entityManager; }
-
-
-    @Override
-    @Transactional
-    public void create(Recepcionista recepcionista) {
-        this.entityManager.persist(recepcionista);
+    public void adicionar(Recepcionista recepcionista) {
+        recepcionistas.add(recepcionista);
     }
 
-    @Override
-    public Recepcionista findById(Integer id) {
-        return this.entityManager.find(Recepcionista.class, id);
+    public void remover(int id) {
+        recepcionistas.removeIf(recepcionista -> recepcionista.getId() == id);
     }
 
-    @Override
-    public List<Recepcionista> findAll() {
-        return entityManager.createQuery("select s from Recepcionista s ORDER BY s. nome", Recepcionista.class).getResultList();
+    private Recepcionista filtrarRecepcionista(int id) {
+        return recepcionistas.stream().filter(r -> r.getId() == id).findFirst();
     }
 
-    @Override
-    public List<Recepcionista> findByName(String name) {
-        TypedQuery<Recepcionista> query = entityManager
-                .createQuery("select s from Recepcionista s WHERE s.firstName LIKE: name", Recepcionista.class);
-        query.setParameter("name", "%" + name + "%");
+    public Recepcionista buscarPorId(int id) {
+        Recepcionista recepcionistaInDb = filtrarRecepcionista(id);
 
-        return query.getResultList();
+        return recepcionistaInDb;
     }
 
-    @Override
-    @Transactional
-    public void update(int id, Recepcionista recepcionista) {
-        TypedQuery<Recepcionista> query = entityManager
-                .createQuery("delete s from Student s WHERE s.id = :id", Recepcionista.class);
-        query.setParameter("id", id);
-
-        query.executeUpdate();
+    public ArrayList<Recepcionista> buscarTodos() {
+        return recepcionistas;
     }
 
-    @Override
-    @Transactional
-    public void deleteById(int id) {
-        TypedQuery<Recepcionista> query = entityManager
-                .createQuery("delete from Recepcionista s", Recepcionista.class);
+    public void atualizarRecepcionista(int id, Recepcionista recepcionista) {
+        Recepcionista recepcionistaInDb = filtrarRecepcionista(id);
 
-        query.executeUpdate();
+        recepcionistaInDb.setNome(recepcionista.getNome());
+        recepcionistaInDb.setClinica(recepcionista.getClinica());
+        recepcionistaInDb.setEmail(recepcionista.getEmail());
+        recepcionistaInDb.setSenha(recepcionista.getSenha());
     }
 }

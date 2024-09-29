@@ -2,67 +2,43 @@ package com.example.sistemaMonitoramento.repositories;
 
 import com.example.sistemaMonitoramento.entities.Clinica;
 import com.example.sistemaMonitoramento.interfaces.IClinicaRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
+@Repository
 public class ClinicaRepository implements IClinicaRepository {
-    private EntityManager entityManager;
+    private ArrayList<Clinica> clinicas = new ArrayList<>();
 
-    @Autowired
-    public ClinicaRepository (EntityManager entityManager){ this.entityManager = entityManager; }
-
-
-    @Override
-    @Transactional
-    public void create(Clinica clinica) {
-        this.entityManager.persist(clinica);
+    public void adicionar(Clinica clinica) {
+        clinicas.add(clinica);
     }
 
-    @Override
-    public Clinica findById(Integer id) {
-        return this.entityManager.find(Clinica.class, id);
+    public void remover(int id) {
+        clinicas.removeIf(clinica -> clinica.getId() == id);
     }
 
-    @Override
-    public List<Clinica> findAll() {
-        return entityManager.createQuery("select s from ClinicaRepository s ORDER BY s. nome", Clinica.class).getResultList();
+    private Clinica filtrarClinica(int id) {
+        return clinicas.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
     }
 
-    @Override
-    public List<Clinica> findByName(String name) {
-        TypedQuery<Clinica> query = entityManager
-                .createQuery("select s from Clinica s WHERE s.firstName LIKE: name", Clinica.class);
-        query.setParameter("name", "%" + name + "%");
-
-        return query.getResultList();
+    public Clinica buscarPorId(int id) {
+        return filtrarClinica(id);
     }
 
-    @Override
-    @Transactional
-    public void update(int id, Clinica clinica) {
-        Clinica clinicaInDb = this.entityManager.find(Clinica.class, id);
-
-        clinicaInDb.setNome(clinica.getNome());
-        clinicaInDb.setEndereco(clinica.getEndereco());
-        clinicaInDb.setMedicos(clinica.getMedicos());
-        clinicaInDb.setTelefone(clinica.getTelefone());
-        clinicaInDb.setPacientes(clinica.getPacientes());
-
-        this.entityManager.merge(clinicaInDb);
-
+    public ArrayList<Clinica> buscarTodos() {
+        return clinicas;
     }
 
-    @Override
-    @Transactional
-    public void deleteById(int id) {
-        TypedQuery<Clinica> query = entityManager
-                .createQuery("delete from ClinicaRepository s", Clinica.class);
+    public void atualizarClinica(int id, Clinica clinica) {
+        Clinica clinicaInDb = filtrarClinica(id);
 
-        query.executeUpdate();
+        if (clinicaInDb != null) {
+            clinicaInDb.setNome(clinica.getNome());
+            clinicaInDb.setEndereco(clinica.getEndereco());
+            clinicaInDb.setTelefone(clinica.getTelefone());
+            clinicaInDb.setMedicos(clinica.getMedicos());
+            clinicaInDb.setPacientes(clinica.getPacientes());
+        }
     }
 }
-

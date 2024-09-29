@@ -1,66 +1,42 @@
 package com.example.sistemaMonitoramento.repositories;
 
 import com.example.sistemaMonitoramento.entities.Comorbidade;
-import com.example.sistemaMonitoramento.entities.DadosDiarios;
-import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.interfaces.IComorbidadeRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
+@Repository
 public class ComorbidadeRepository implements IComorbidadeRepository {
-    private EntityManager entityManager;
+    private ArrayList<Comorbidade> comorbidades = new ArrayList<>();
 
-    @Autowired
-    public ComorbidadeRepository (EntityManager entityManager){ this.entityManager = entityManager; }
-
-
-    @Override
-    @Transactional
-    public void create(Comorbidade comorbidade) {
-        this.entityManager.persist(comorbidade);
+    public void adicionar(Comorbidade comorbidade) {
+        comorbidades.add(comorbidade);
     }
 
-    @Override
-    public Comorbidade findById(Integer id) {
-        return this.entityManager.find(Comorbidade.class, id);
+    public void remover(int id) {
+        comorbidades.removeIf(c -> c.getId() == id);
     }
 
-    @Override
-    public List<Comorbidade> findAll() {
-        return entityManager.createQuery("select s from Comorbidade s ORDER BY s. nome", Comorbidade.class).getResultList();
+    private Comorbidade filtrarComorbidade(int id) {
+        return comorbidades.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
     }
 
-    @Override
-    public List<Comorbidade> findByName(String name) {
-        TypedQuery<Comorbidade> query = entityManager
-                .createQuery("select s from Comorbidade s WHERE s.firstName LIKE: name", Comorbidade.class);
-        query.setParameter("name", "%" + name + "%");
-
-        return query.getResultList();
+    public Comorbidade buscarPorId(int id) {
+        return filtrarComorbidade(id);
     }
 
-    @Override
-    @Transactional
-    public void update(int id, Comorbidade comorbidade) {
-        Comorbidade comorbidadeInDb = this.entityManager.find(Comorbidade.class, id);
-
-        comorbidadeInDb.setDescricao(comorbidade.getDescricao());
-        comorbidadeInDb.setNome(comorbidade.getNome());
-
-
-        this.entityManager.merge(comorbidadeInDb);
+    public ArrayList<Comorbidade> buscarTodos() {
+        return comorbidades;
     }
 
-    @Override
-    @Transactional
-    public void deleteById(int id) {
-        TypedQuery<Comorbidade> query = entityManager
-                .createQuery("delete from Comorbidade s", Comorbidade.class);
+    public void atualizarComorbidade(int id, Comorbidade comorbidade) {
+        Comorbidade comorbidadeInDb = filtrarComorbidade(id);
 
-        query.executeUpdate();
+        if (comorbidadeInDb != null) {
+            comorbidadeInDb.setNome(comorbidade.getNome());
+            comorbidadeInDb.setDescricao(comorbidade.getDescricao());
+            comorbidadeInDb.setPacientes(comorbidade.getPacientes());
+        }
     }
 }
