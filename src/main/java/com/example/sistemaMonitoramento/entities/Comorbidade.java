@@ -8,23 +8,31 @@ import java.util.List;
 @Table(name = "comorbidades")
 public class Comorbidade {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "descricao", nullable = true)
+    @Column(name = "descricao")
     private String descricao;
 
     @OneToMany(mappedBy = "comorbidade")
     private List<Paciente> pacientes;
 
-    public Integer getId() {
+    public Comorbidade(int id, String nome, String descricao, List<Paciente> pacientes) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.pacientes = pacientes;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

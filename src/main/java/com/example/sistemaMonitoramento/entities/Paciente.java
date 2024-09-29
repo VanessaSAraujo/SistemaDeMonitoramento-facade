@@ -8,10 +8,11 @@ import jakarta.persistence.*;
 @Table(name = "pacientes")
 public class Paciente {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
     @Column(name = "idade", nullable = false)
@@ -20,13 +21,13 @@ public class Paciente {
     @Column(name = "historico_medico")
     private String historicoMedico;
 
-    @Column(name = "contato", length = 100)
+    @Column(name = "contato")
     private String contato;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "senha", length = 45)
+    @Column(name = "senha")
     private String senha;
 
     @ManyToOne
@@ -37,6 +38,17 @@ public class Paciente {
     @JoinColumn(name = "id_clinica")
     private Clinica clinica;
 
+    public Paciente(int id, String nome, int idade, String historicoMedico, String contato, String email, String senha, Comorbidade comorbidade, Clinica clinica) {
+        this.id = id;
+        this.nome = nome;
+        this.idade = idade;
+        this.historicoMedico = historicoMedico;
+        this.contato = contato;
+        this.email = email;
+        this.senha = senha;
+        this.comorbidade = comorbidade;
+        this.clinica = clinica;
+    }
 
     public int getId() {
         return id;

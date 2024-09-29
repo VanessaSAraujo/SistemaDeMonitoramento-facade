@@ -1,24 +1,19 @@
 package com.example.sistemaMonitoramento.interfaces;
 
-import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.entities.Paciente;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IPacienteRepository {
 
-    void create (Paciente paciente);
+    void adicionar(Paciente paciente);
 
-    Paciente findById(Integer id);
+    void remover(int id);
 
-    List<Paciente> findAll();
+    Paciente buscarPorId(int id);
 
-    List<Paciente> findByName(String name);
+    ArrayList<Paciente> buscarTodos();
 
-    void update(int id, Paciente paciente);
-
-    void deleteById(int id);
+    void atualizarPaciente(int id, Paciente paciente);
 
 }

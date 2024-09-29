@@ -1,68 +1,47 @@
 package com.example.sistemaMonitoramento.repositories;
 
-import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.entities.Paciente;
 import com.example.sistemaMonitoramento.interfaces.IPacienteRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
+@Repository
 public class PacienteRepository implements IPacienteRepository {
-    private EntityManager entityManager;
+    private ArrayList<Paciente> pacientes = new ArrayList<Paciente>();
 
-    @Autowired
-    public PacienteRepository (EntityManager entityManager){ this.entityManager = entityManager; }
-
-
-    @Override
-    @Transactional
-    public void create(Paciente paciente) {
-        this.entityManager.persist(paciente);
+    public void adicionar(Paciente paciente) {
+        pacientes.add(paciente);
     }
 
-    @Override
-    public Paciente findById(Integer id) {
-        return this.entityManager.find(Paciente.class, id);
+    public void remover(int id) {
+        pacientes.removeIf(paciente -> paciente.getId() == id);
     }
 
-    @Override
-    public List<Paciente> findAll() {
-        return entityManager.createQuery("select s from Paciente s ORDER BY s. nome", Paciente.class).getResultList();
+    private Paciente filtrarPaciente(int id) {
+        return pacientes.stream().filter(p -> p.getId() == id).findFirst();
     }
 
-    @Override
-    public List<Paciente> findByName(String name) {
-        TypedQuery<Paciente> query = entityManager
-                .createQuery("select s from Student s WHERE s.firstName LIKE: name", Paciente.class);
-        query.setParameter("name", "%" + name + "%");
+    public Paciente buscarPorId(int id) {
+        Paciente pacienteInDb = filtrarPaciente(id);
 
-        return query.getResultList();
+        return pacienteInDb;
     }
 
-    @Override
-    @Transactional
-    public void update(int id, Paciente paciente) {
-        Paciente pacienteInDb = this.entityManager.find(Paciente.class, id);
+    public ArrayList<Paciente> buscarTodos() {
+        return pacientes;
+    }
+
+    public void atualizarPaciente(int id, Paciente paciente) {
+        Paciente pacienteInDb = filtrarPaciente(id);
 
         pacienteInDb.setNome(paciente.getNome());
-        pacienteInDb.setClinica(paciente.getClinica());
-        pacienteInDb.setComorbidade(paciente.getComorbidade());
+        pacienteInDb.setIdade(paciente.getIdade());
+        pacienteInDb.setHistoricoMedico(paciente.getHistoricoMedico());
         pacienteInDb.setContato(paciente.getContato());
         pacienteInDb.setEmail(paciente.getEmail());
-
-        this.entityManager.merge(pacienteInDb);
-
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(int id) {
-        TypedQuery<Paciente> query = entityManager
-                .createQuery("delete from Paciente s", Paciente.class);
-
-        query.executeUpdate();
+        pacienteInDb.setSenha(paciente.getSenha());
+        pacienteInDb.setComorbidade(paciente.getComorbidade());
+        pacienteInDb.setClinica(paciente.getClinica());
     }
 }
