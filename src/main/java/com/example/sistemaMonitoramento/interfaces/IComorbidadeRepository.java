@@ -1,21 +1,17 @@
 package com.example.sistemaMonitoramento.interfaces;
 
 import com.example.sistemaMonitoramento.entities.Comorbidade;
-import com.example.sistemaMonitoramento.entities.Medico;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IComorbidadeRepository {
-    void create (Comorbidade comorbidade);
+    void adicionar(Comorbidade comorbidade);
 
-    Comorbidade findById(Integer id);
+    void remover(int id);
 
-    List<Comorbidade> findAll();
+    Comorbidade buscarPorId(int id);
 
-    List<Comorbidade> findByName(String name);
+    ArrayList<Comorbidade> buscarTodos();
 
-    void update(int id, Comorbidade comorbidade);
-
-    void deleteById(int id);
+    void atualizarComorbidade(int id, Comorbidade comorbidade);
 }

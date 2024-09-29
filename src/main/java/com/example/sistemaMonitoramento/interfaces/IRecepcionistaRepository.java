@@ -1,26 +1,17 @@
 package com.example.sistemaMonitoramento.interfaces;
 
-import com.example.sistemaMonitoramento.entities.Medico;
 import com.example.sistemaMonitoramento.entities.Recepcionista;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IRecepcionistaRepository {
+    void adicionar(Recepcionista recepcionista);
 
-    void create (Recepcionista recepcionista);
+    void remover(int id);
 
-    Recepcionista findById(Integer id);
+    Recepcionista buscarPorId(int id);
 
-    List<Recepcionista> findAll();
+    ArrayList<Recepcionista> buscarTodos();
 
-    List<Recepcionista> findByName(String name);
-
-    void update(int id, Recepcionista recepcionista);
-
-    void deleteById(int id);
-
-
-
+    void atualizarRecepcionista(int id, Recepcionista recepcionista);
 }
-

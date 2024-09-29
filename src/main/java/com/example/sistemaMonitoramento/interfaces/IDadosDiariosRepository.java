@@ -1,25 +1,18 @@
 package com.example.sistemaMonitoramento.interfaces;
 
 import com.example.sistemaMonitoramento.entities.DadosDiarios;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IDadosDiariosRepository {
 
-    @Transactional
-    void create(DadosDiarios dadosDiarios);
+    void adicionar(DadosDiarios dados);
 
-    DadosDiarios findById(Integer id);
+    void remover(int id);
 
-    List<DadosDiarios> findAll();
+    DadosDiarios buscarPorId(int id);
 
-    List<DadosDiarios> findByName(String name);
+    ArrayList<DadosDiarios> buscarTodos();
 
-    @Transactional
-    void update(int id, DadosDiarios dadosDiarios);
-
-    @Transactional
-    void deleteById(int id);
+    void atualizarDadosDiarios(int id, DadosDiarios dados);
 }

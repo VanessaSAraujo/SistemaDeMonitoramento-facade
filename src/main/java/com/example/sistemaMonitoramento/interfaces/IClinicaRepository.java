@@ -1,24 +1,17 @@
 package com.example.sistemaMonitoramento.interfaces;
 
 import com.example.sistemaMonitoramento.entities.Clinica;
-import jakarta.transaction.Transactional;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IClinicaRepository {
+    void adicionar(Clinica clinica);
 
-    @Transactional
-    void create(Clinica clinica);
+    void remover(int id);
 
-    Clinica findById(Integer id);
+    Clinica buscarPorId(int id);
 
-    List<Clinica> findAll();
+    ArrayList<Clinica> buscarTodos();
 
-    List<Clinica> findByName(String name);
-
-    @Transactional
-    void update(int id, Clinica clinica);
-
-    @Transactional
-    void deleteById(int id);
+    void atualizarClinica(int id, Clinica clinica);
 }

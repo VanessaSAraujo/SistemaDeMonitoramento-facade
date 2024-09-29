@@ -2,22 +2,19 @@ package com.example.sistemaMonitoramento.interfaces;
 
 import com.example.sistemaMonitoramento.entities.Medico;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IMedicoRepository {
 
-    void create (Medico medico);
+    void adicionar(Medico medico);
 
-    Medico findById(Integer id);
+    void remover(int id);
 
-    List<Medico> findAll();
+    Medico buscarPorId(int id);
 
-    List<Medico> findByName(String name);
+    ArrayList<Medico> buscarTodos();
 
-    void update(int id, Medico medico);
-
-    void deleteById(int id);
-
+    void atualizarMedico(int id, Medico medico);
 
 
 }
