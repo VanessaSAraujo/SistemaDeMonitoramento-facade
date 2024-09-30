@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "clinicas")
 public class Clinica {
 
-    public Clinica(){
+    public Clinica (){
 
     }
 

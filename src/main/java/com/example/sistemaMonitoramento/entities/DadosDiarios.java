@@ -8,7 +8,7 @@ import java.util.Date;
 @Table(name = "dadosdiarios")
 public class DadosDiarios {
 
-    public DadosDiarios(){
+    public DadosDiarios (){
 
     }
 

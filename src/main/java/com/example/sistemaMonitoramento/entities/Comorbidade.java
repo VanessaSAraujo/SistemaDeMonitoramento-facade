@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "comorbidades")
 public class Comorbidade {
-    public Comorbidade(){
+    public Comorbidade (){
 
     }
     @Id
