@@ -4,9 +4,15 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+
 @Entity
 @Table(name = "clinicas")
 public class Clinica {
+
+    public Clinica(){
+
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
