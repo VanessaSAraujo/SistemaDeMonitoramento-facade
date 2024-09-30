@@ -7,6 +7,11 @@ import java.util.Date;
 @Entity
 @Table(name = "observacoesmedicas")
 public class ObservacoesMedicas {
+
+    public ObservacoesMedicas () {
+
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
