@@ -7,6 +7,9 @@ import java.util.List;
 @Entity
 @Table(name = "comorbidades")
 public class Comorbidade {
+    public Comorbidade (){
+
+    }
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
