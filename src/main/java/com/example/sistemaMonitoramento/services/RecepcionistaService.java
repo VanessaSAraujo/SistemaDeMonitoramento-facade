@@ -1,7 +1,7 @@
 package com.example.sistemaMonitoramento.services;
 
 import com.example.sistemaMonitoramento.entities.Recepcionista;
-import com.example.sistemaMonitoramento.repositories.RecepicionistaRepository;
+import com.example.sistemaMonitoramento.repositories.RecepcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class RecepcionistaService {
 
     @Autowired
-    private RecepicionistaRepository recepcionistaRepository;
+    private RecepcionistaRepository recepcionistaRepository;
 
     public void adicionarRecepcionista(Recepcionista recepcionista) {
         recepcionistaRepository.adicionar(recepcionista);

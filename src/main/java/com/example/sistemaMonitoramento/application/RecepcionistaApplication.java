@@ -1,7 +1,7 @@
-package com.example.sistemaMonitoramento.applications;
+package com.example.sistemaMonitoramento.application;
 
 import com.example.sistemaMonitoramento.entities.Recepcionista;
-import com.example.sistemaMonitoramento.repositories.RecepicionistaRepository;
+import com.example.sistemaMonitoramento.interfaces.IRecepcionistaRepository;
 import com.example.sistemaMonitoramento.services.RecepcionistaService;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Service
 public class RecepcionistaApplication {
-    private RecepicionistaRepository recepcionistaRepository;
+    private IRecepcionistaRepository recepcionistaRepository;
     private RecepcionistaService recepcionistaService;
 
-    public RecepcionistaApplication(RecepicionistaRepository recepcionistaRepository, RecepcionistaService recepcionistaService) {
+    public RecepcionistaApplication(IRecepcionistaRepository recepcionistaRepository, RecepcionistaService recepcionistaService) {
         this.recepcionistaRepository = recepcionistaRepository;
         this.recepcionistaService = recepcionistaService;
     }
