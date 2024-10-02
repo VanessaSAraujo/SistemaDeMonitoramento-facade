@@ -1,5 +1,6 @@
 package com.example.sistemaMonitoramento.controllers;
 
+import com.example.sistemaMonitoramento.entities.Clinica;
 import com.example.sistemaMonitoramento.entities.Recepcionista;
 import com.example.sistemaMonitoramento.facade.RecepcionistaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class RecepcionistaController {
         this.recepcionistaFacade = recepcionistaFacade;
         inicializarRecepcionistas();
     }
-
+    Clinica clinicaA = new Clinica(1,"joão",);
     public void inicializarRecepcionistas() {
-        recepcionistaFacade.adicionar(new Recepcionista(1, "Ana", "Clínica A", "ana@clinica.com", "senha123"));
+        recepcionistaFacade.adicionar(new Recepcionista(1, "Ana", , "ana@clinica.com", "senha123"));
         recepcionistaFacade.adicionar(new Recepcionista(2, "Carlos", "Clínica B", "carlos@clinica.com", "senha456"));
     }
 

@@ -1,6 +1,6 @@
 package com.example.sistemaMonitoramento.facade;
 
-import com.example.sistemaMonitoramento.applications.RecepcionistaApplication;
+import com.example.sistemaMonitoramento.application.RecepcionistaApplication;
 import com.example.sistemaMonitoramento.entities.Recepcionista;
 import org.springframework.stereotype.Component;
 
@@ -33,4 +33,5 @@ public class RecepcionistaFacade {
     public void atualizarRecepcionista(int id, Recepcionista recepcionista) {
         this.recepcionistaApplication.atualizarRecepcionista(id, recepcionista);
     }
+
 }
