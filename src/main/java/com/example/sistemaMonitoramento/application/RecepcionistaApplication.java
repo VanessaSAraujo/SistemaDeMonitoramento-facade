@@ -1,39 +1,58 @@
-package com.example.sistemaMonitoramento.application;
+package com.example.sistemaMonitoramento.controllers;
 
-import com.example.sistemaMonitoramento.entities.Recepcionista;
-import com.example.sistemaMonitoramento.interfaces.IRecepcionistaRepository;
-import com.example.sistemaMonitoramento.services.RecepcionistaService;
-import org.springframework.stereotype.Service;
+import com.example.sistemaMonitoramento.entities.Clinica;
+import com.example.sistemaMonitoramento.facade.ClinicaFacade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Service
-public class RecepcionistaApplication {
-    private IRecepcionistaRepository recepcionistaRepository;
-    private RecepcionistaService recepcionistaService;
+@RestController
+public class RecepcionistaController {
 
-    public RecepcionistaApplication(IRecepcionistaRepository recepcionistaRepository, RecepcionistaService recepcionistaService) {
-        this.recepcionistaRepository = recepcionistaRepository;
-        this.recepcionistaService = recepcionistaService;
+    private final RecepcionistaFacade recepcionistaFacade;
+
+    @Autowired
+    public RecepcionistaController(RecepcionistaFacade recepcionistaFacade) {
+        this.recepcionistaFacade = recepcionistaFacade;
     }
 
-    public void adicionar(Recepcionista recepcionista) {
-        this.recepcionistaRepository.adicionar(recepcionista);
+    @GetMapping("/buscarRecepcionista")
+    public ResponseEntity<List<Recepcionista>> buscarTodos() {
+        List<Recepcionista> recepcionista = recepcionistaFacade.buscarTodos();
+
+        return ResponseEntity.ok(recepcionistas);
     }
 
-    public void remover(int id) {
-        this.recepcionistaRepository.remover(id);
+    @GetMapping("/buscarRecepcionista/{id}")
+    public ResponseEntity<Recepcionista> buscarPorId(@PathVariable int id) {
+        Recepcionista recepcionista = recepcionistaFacade.buscarPorId(id);
+        if (recepcionista == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return ResponseEntity.ok(recepcionista);
     }
 
-    public Recepcionista buscarPorId(int id) {
-        return this.recepcionistaRepository.buscarPorId(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizar(@PathVariable int id, @RequestBody Recepcionista recepcionista) {
+        recepcionistaFacade.atualizarRecepcionista(id, recepcionista);
+
+        return ResponseEntity.ok(null);
     }
 
-    public List<Recepcionista> buscarTodos() {
-        return this.recepcionistaRepository.buscarTodos();
+    @PostMapping("/")
+    public ResponseEntity<Void> adicionar(@RequestBody Recepcionista recepcionista) {
+        recepcionistaFacade.adicionar(recepcionista);
+
+        return ResponseEntity.ok(null);
     }
 
-    public void atualizarRecepcionista(int id, Recepcionista recepcionista) {
-        this.recepcionistaRepository.atualizarRecepcionista(id, recepcionista);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable int id) {
+        recepcionistaFacade.remover(id);
+
+        return ResponseEntity.ok(null);
     }
 }
