@@ -1,39 +1,52 @@
 package com.example.sistemaMonitoramento.repositories;
 
+import com.example.sistemaMonitoramento.entities.Clinica;
 import com.example.sistemaMonitoramento.entities.Paciente;
 import com.example.sistemaMonitoramento.interfaces.IPacienteRepository;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 
-@Repository
 public class PacienteRepository implements IPacienteRepository {
-    private ArrayList<Paciente> pacientes = new ArrayList<Paciente>();
 
+    private EntityManager entityManager;
+
+    @Transactional
+    @Override
     public void adicionar(Paciente paciente) {
-        pacientes.add(paciente);
+        this.entityManager.persist(paciente);
     }
 
+    @Transactional
+    @Override
     public void remover(int id) {
-        pacientes.removeIf(paciente -> paciente.getId() == id);
+        Query query = entityManager
+                .createQuery("delete from Paciente s WHERE s.id = :id");
+
+        query.setParameter("id", id);
+
+        query.executeUpdate();
     }
 
-    private Paciente filtrarPaciente(int id) {
-        return pacientes.stream().filter(p -> p.getId() == id).findFirst();
-    }
-
+    @Override
     public Paciente buscarPorId(int id) {
-        Paciente pacienteInDb = filtrarPaciente(id);
-
-        return pacienteInDb;
+        return this.entityManager.find(Paciente.class, id);
     }
 
-    public ArrayList<Paciente> buscarTodos() {
-        return pacientes;
+
+    @Override
+    public List<Paciente> buscarTodos() {
+        return entityManager
+                .createQuery("select s from Paciente s", Paciente.class)
+                .getResultList();
     }
 
+    @Transactional
+    @Override
     public void atualizarPaciente(int id, Paciente paciente) {
-        Paciente pacienteInDb = filtrarPaciente(id);
+        Paciente pacienteInDb = this.entityManager.find(Paciente.class, id);
 
         pacienteInDb.setNome(paciente.getNome());
         pacienteInDb.setIdade(paciente.getIdade());
@@ -41,7 +54,10 @@ public class PacienteRepository implements IPacienteRepository {
         pacienteInDb.setContato(paciente.getContato());
         pacienteInDb.setEmail(paciente.getEmail());
         pacienteInDb.setSenha(paciente.getSenha());
-        pacienteInDb.setComorbidade(paciente.getComorbidade());
-        pacienteInDb.setClinica(paciente.getClinica());
+
+        this.entityManager.merge(pacienteInDb);
     }
 }
+
+
+
