@@ -1,13 +1,11 @@
 package com.example.sistemaMonitoramento.controllers;
 
 import com.example.sistemaMonitoramento.entities.Clinica;
-import com.example.sistemaMonitoramento.entities.Recepcionista;
-import com.example.sistemaMonitoramento.facade.RecepcionistaFacade;
+import com.example.sistemaMonitoramento.facade.ClinicaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,23 +17,43 @@ public class RecepcionistaController {
     @Autowired
     public RecepcionistaController(RecepcionistaFacade recepcionistaFacade) {
         this.recepcionistaFacade = recepcionistaFacade;
-        inicializarRecepcionistas();
-    }
-    Clinica clinicaA = new Clinica(1,"joão",);
-    public void inicializarRecepcionistas() {
-        recepcionistaFacade.adicionar(new Recepcionista(1, "Ana", , "ana@clinica.com", "senha123"));
-        recepcionistaFacade.adicionar(new Recepcionista(2, "Carlos", "Clínica B", "carlos@clinica.com", "senha456"));
     }
 
-    @GetMapping("/buscarRecepcionistas")
+    @GetMapping("/buscarRecepcionista")
     public ResponseEntity<List<Recepcionista>> buscarTodos() {
-        List<Recepcionista> recepcionistas = recepcionistaFacade.buscarTodos();
+        List<Recepcionista> recepcionista = recepcionistaFacade.buscarTodos();
+
         return ResponseEntity.ok(recepcionistas);
     }
 
     @GetMapping("/buscarRecepcionista/{id}")
     public ResponseEntity<Recepcionista> buscarPorId(@PathVariable int id) {
         Recepcionista recepcionista = recepcionistaFacade.buscarPorId(id);
+        if (recepcionista == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         return ResponseEntity.ok(recepcionista);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizar(@PathVariable int id, @RequestBody Recepcionista recepcionista) {
+        recepcionistaFacade.atualizarRecepcionista(id, recepcionista);
+
+        return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Void> adicionar(@RequestBody Recepcionista recepcionista) {
+        recepcionistaFacade.adicionar(recepcionista);
+
+        return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable int id) {
+        recepcionistaFacade.remover(id);
+
+        return ResponseEntity.ok(null);
+    }
 }
+
